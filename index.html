@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Garamond', 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a0e1f;
+            background-image: 
+                linear-gradient(to bottom, rgba(26, 14, 31, 0.3), rgba(45, 27, 61, 0.5)),
+                url('https://i.postimg.cc/SsL03nh0/EIA4Kv2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow: auto;
+            padding: 1.5rem;
+        }
+
+        .envelope {
+            position: relative;
+            max-width: 550px;
+            width: 100%;
+            height: 400px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.02);
+        }
+
+        .envelope.opened {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .envelope.opened:hover {
+            transform: none;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(139, 115, 85, 0.9);
+            border: 2px solid rgba(90, 70, 50, 0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            bottom: 0;
+            background: rgba(160, 130, 95, 0.95);
+            border: 2px solid rgba(90, 70, 50, 0.8);
+            border-top: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            top: 0;
+            background: rgba(139, 115, 85, 0.95);
+            border: 2px solid rgba(90, 70, 50, 0.8);
+            border-bottom: none;
+            transform-origin: top center;
+            transition: transform 1.2s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+        }
+
+        .envelope.opened .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(139, 69, 69, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: rgba(240, 235, 220, 0.9);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(100, 50, 50, 0.8);
+            transition: opacity 0.5s ease;
+            z-index: 10;
+        }
+
+        .envelope.opened .seal {
+            opacity: 0;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(240, 235, 220, 0.9);
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 0.1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            animation: pulse 2s infinite;
+            transition: opacity 0.5s ease;
+        }
+
+        .envelope.opened .click-hint {
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 520px;
+            width: 95%;
+            background: rgba(240, 235, 220, 0.95);
+            padding: 2.5rem 2rem;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(139, 115, 85, 0.3);
+            opacity: 0;
+            transition: opacity 1s ease 0.8s;
+            pointer-events: none;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .envelope.opened .letter {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(139, 115, 85, 0.03) 2px,
+                rgba(139, 115, 85, 0.03) 3px
+            );
+            pointer-events: none;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(139, 115, 85, 0.3);
+            padding-bottom: 1.5rem;
+        }
+
+        .symbol {
+            font-size: 2rem;
+            color: #8b7355;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5rem;
+        }
+
+        .letter-title {
+            font-size: 1.6rem;
+            letter-spacing: 0.4rem;
+            color: #3a2f25;
+            font-weight: 400;
+            margin-bottom: 0.4rem;
+        }
+
+        .letter-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 0.25rem;
+            color: #8b7355;
+            font-style: italic;
+        }
+
+        .letter-content {
+            color: #3a2f25;
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: justify;
+            position: relative;
+        }
+
+        .letter-content p {
+            margin-bottom: 1.2rem;
+            text-indent: 1.5rem;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #6b5744;
+            border-left: 3px solid rgba(139, 115, 85, 0.4);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            text-indent: 0 !important;
+        }
+
+        .signature {
+            margin-top: 2rem;
+            text-align: right;
+            font-style: italic;
+            color: #8b7355;
+            border-top: 1px solid rgba(139, 115, 85, 0.2);
+            padding-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .envelope {
+                height: 300px;
+            }
+
+            .letter {
+                padding: 2rem 1.5rem;
+            }
+            
+            .letter-title {
+                font-size: 1.3rem;
+                letter-spacing: 0.3rem;
+            }
+
+            .letter-content {
+                font-size: 0.95rem;
+            }
+
+            .seal {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .click-hint {
+                font-size: 0.9rem;
+                bottom: -50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope" id="envelope">
+        <div class="envelope-back"></div>
+        <div class="envelope-front"></div>
+        <div class="envelope-flap"></div>
+        <div class="seal">🦩</div>
+        <div class="click-hint">Clique para abrir a carta</div>
+        
+        <div class="letter">
+            <div class="letter-header">
+                <div class="symbol">⧖</div>
+                <h1 class="letter-title">FELIZ MÊSVERSARIO!</h1>
+                <p class="letter-subtitle">(eu não lembro quantos meses...)</p>
+            </div>
+
+            <div class="letter-content">
+                <p class="quote">
+                    "A dor da sua ausência é aguda e assustadora, e eu daria qualquer coisa para não senti-la, qualquer coisa, menos nunca ter te conhecido (o que seria pior)."
+                </p>
+
+                <p>
+                    Eu queria ter feito essa parte inspirado em Outer Wilds (justamente pra usar essa frase do jogo, mas tava bem impossível de fazer o que eu queria então eu desisti :P), mas isso não importa, o que importa agora é esse momento.
+                </p>
+
+                <p>
+                    Eu talvez tenha sido nerd demais fazendo um "mini-arg" pra você resolver só pra chegar nesse tipo de carta, e mesmo que você demore muito tempo, ou pouco, tanto faz, eu me diverti bastante montando tudo, pensando em como fazer cada enigma, o que usar em cada parte, procurando fonte pra encaixar no tema, e etc, eu espero que você tenha se divertido fazendo tudo isso.
+                </p>
+
+                <p>
+                    A gente tá junto a um bom tempo, e eu pelo menos não consigo mais imaginar um dia sem você do meu lado, eu sei que as coisas não andam fáceis, nem pra mim, nem pra você, eu mesmo não estou na minha melhor versão, e que as vezes eu sou muito chato e que discuto coisas por nada, mas eu sei que tudo isso vai melhorar, que nós vamos melhorar e que toda essa fase ruim vai passar e vai ser só mais um ponto na nossa história.
+                </p>
+
+                <p>
+                    Eu realmente quero fazer tudo ao seu lado, e mesmo eu não tendo uma visão tão grande do futuro, eu pelo menos vejo você do meu lado nos poucos que eu consigo imaginar, o tempo pode ser assustador as vezes, e ele é mesmo, mas se tivermos um ao outro para se apoiar, tudo fica mais fácil.
+                </p>
+
+                <p>
+                    Eu te amo muitão, mesmo você sendo chatinha as vezes s2
+                </p>
+
+                <p class="quote">
+                    "O futuro depende do passado, mesmo que a gente não consiga ver."
+                </p>
+            </div>
+
+            <div class="signature">
+                ~ Com amor, Mikaé ~
+            </div>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" loop volume="0.07">
+        <source src="https://github.com/oMikaelito/naoteramaisvolta/raw/main/tndnbtg.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const music = document.getElementById('backgroundMusic');
+        music.volume = 0.07;
+        
+        // Pré-carrega o áudio
+        music.load();
+        
+        envelope.addEventListener('click', function() {
+            if (!this.classList.contains('opened')) {
+                // Toca a música ANTES de adicionar a classe
+                music.play().catch(error => {
+                    console.log('Erro ao tocar música:', error);
+                });
+                
+                // Adiciona a classe opened imediatamente após
+                this.classList.add('opened');
+            }
+        });
+    </script>
+</body>
+</html>
